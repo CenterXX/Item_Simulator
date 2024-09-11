@@ -4,6 +4,7 @@ import prisma from "../prismaClient.js";
 export const purchaseItems = async (req, res) => {
   const { id } = req.params;
   const itemsToPurchase = req.body;
+
   try {
     const character = await prisma.character.findUnique({
       where: { id: parseInt(id) },
@@ -30,7 +31,7 @@ export const purchaseItems = async (req, res) => {
       inventoryUpdates.push({
         characterId: character.id,
         itemId: item.id,
-        quantity: count,
+        quantity: count, // 여기에서 item_count 대신 quantity 사용
       });
     }
 
@@ -46,12 +47,10 @@ export const purchaseItems = async (req, res) => {
     });
 
     for (let update of inventoryUpdates) {
-      const existingInventoryItem = await prisma.inventory.findUnique({
+      const existingInventoryItem = await prisma.inventory.findFirst({
         where: {
-          characterId_itemId: {
-            characterId: update.characterId,
-            itemId: update.itemId,
-          },
+          characterId: update.characterId,
+          itemId: update.itemId,
         },
       });
 

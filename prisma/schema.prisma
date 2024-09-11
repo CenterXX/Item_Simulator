@@ -42,7 +42,9 @@ model Inventory {
   characterId Int
   item        Item @relation(fields: [itemId], references: [id])
   itemId      Int
-  item_count  Int
+  quantity    Int
+
+  @@unique([characterId, itemId])
 }
 
 model CharacterItem {
