@@ -4,7 +4,6 @@ import prisma from "../prismaClient.js";
 export const purchaseItems = async (req, res) => {
   const { id } = req.params;
   const itemsToPurchase = req.body;
-
   try {
     const character = await prisma.character.findUnique({
       where: { id: parseInt(id) },
