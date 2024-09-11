@@ -1,8 +1,8 @@
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const prisma = require("../prismaClient");
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+import prisma from "../prismaClient.js";
 
-const signup = async (req, res) => {
+export const signup = async (req, res) => {
   const { username, password } = req.body;
   const hashedPassword = await bcrypt.hash(password, 10);
   const newUser = await prisma.user.create({
@@ -14,7 +14,7 @@ const signup = async (req, res) => {
   res.status(201).json({ id: newUser.id, username: newUser.username });
 };
 
-const login = async (req, res) => {
+export const login = async (req, res) => {
   const { username, password } = req.body;
   const user = await prisma.user.findUnique({ where: { username } });
   if (!user || !(await bcrypt.compare(password, user.password))) {
@@ -26,5 +26,3 @@ const login = async (req, res) => {
   });
   res.json({ token });
 };
-
-module.exports = { signup, login };

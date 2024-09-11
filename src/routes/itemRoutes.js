@@ -1,15 +1,16 @@
-const express = require("express");
-const {
+import express from "express";
+import {
   createItem,
   updateItem,
   getItem,
   getItems,
-} = require("../controllers/itemController");
+} from "../controllers/itemController.js";
+
 const router = express.Router();
 
 router.post("/", createItem);
-router.put("/:id", updateItem);
+router.patch("/:id", updateItem);
 router.get("/:id", getItem);
 router.get("/", getItems);
 
-module.exports = router;
+export default router;
