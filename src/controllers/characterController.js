@@ -18,7 +18,7 @@ export const createCharacter = async (req, res) => {
     res.status(201).json(character);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Failed to create character' });
+    res.status(500).json({ message: '케릭터 생성에 실패했습니다.' });
   }
 };
 
@@ -36,7 +36,7 @@ export const deleteCharacter = async (req, res) => {
     if (!character || character.userId !== userId) {
       return res
         .status(403)
-        .json({ message: 'Not authorized to delete this character' });
+        .json({ message: '해당 케릭터를 삭제할 권환이 없습니다.' });
     }
 
     // 캐릭터 삭제
@@ -44,10 +44,10 @@ export const deleteCharacter = async (req, res) => {
       where: { id: characterId },
     });
 
-    res.json({ message: 'Character deleted' });
+    res.json({ message: '케릭터가 삭제되었습니다.' });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Character deletion failed' });
+    res.status(500).json({ message: '케릭터 삭제에 실패해였습니다.' });
   }
 };
 
@@ -62,7 +62,7 @@ export const earnMoney = async (req, res) => {
     });
 
     if (!character) {
-      return res.status(404).json({ message: 'Character not found' });
+      return res.status(404).json({ message: '케릭터를 찾을 수 없습니다.' });
     }
 
     // 캐릭터의 게임 머니를 100원 증가
@@ -75,7 +75,7 @@ export const earnMoney = async (req, res) => {
     res.json({ money: updatedCharacter.money });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Failed to earn money' });
+    res.status(500).json({ message: '게임 머니 획득에 실패했습니다.' });
   }
 };
 
@@ -92,7 +92,7 @@ export const getCharacterDetails = async (req, res) => {
     });
 
     if (!character) {
-      return res.status(404).json({ message: 'Character not found' });
+      return res.status(404).json({ message: '케릭터를 찾을 수 없습니다.' });
     }
 
     // 소유자 확인 (로그인된 사용자와 캐릭터 소유자가 같은지 여부 판단)
@@ -116,6 +116,6 @@ export const getCharacterDetails = async (req, res) => {
     });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Failed to get character details' });
+    res.status(500).json({ message: '케릭터 정보를 조회하는데 실패했습니다.' });
   }
 };

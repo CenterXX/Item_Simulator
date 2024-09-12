@@ -1,4 +1,4 @@
-import prisma from "../prismaClient.js";
+import prisma from '../prismaClient.js';
 
 // 아이템 장착 API
 export const equipItem = async (req, res) => {
@@ -12,13 +12,13 @@ export const equipItem = async (req, res) => {
     });
 
     if (!character) {
-      return res.status(404).json({ message: "Character not found" });
+      return res.status(404).json({ message: '캐릭터를 찾을 수 없습니다.' });
     }
 
     // 아이템 찾기
     const item = await prisma.item.findFirst({ where: { item_code } });
     if (!item) {
-      return res.status(400).json({ message: "Item not found" });
+      return res.status(400).json({ message: '아이템을 찾을 수 없습니다.' });
     }
 
     // 인벤토리에서 해당 아이템 찾기
@@ -30,9 +30,7 @@ export const equipItem = async (req, res) => {
     });
 
     if (!inventoryItem || inventoryItem.quantity < 1) {
-      return res
-        .status(400)
-        .json({ message: "Item not available in inventory" });
+      return res.status(400).json({ message: '인벤토리에 아이템이 없습니다.' });
     }
 
     // 이미 장착된 아이템이 있는지 확인 (아이템 중복 장착 방지)
@@ -44,7 +42,7 @@ export const equipItem = async (req, res) => {
     });
 
     if (equippedItem) {
-      return res.status(400).json({ message: "Item is already equipped" });
+      return res.status(400).json({ message: '아이템이 이미 장착되었습니다.' });
     }
 
     // 캐릭터 스탯 업데이트 (아이템 능력치 적용)
@@ -71,10 +69,10 @@ export const equipItem = async (req, res) => {
       });
     }
 
-    res.json({ message: "Item equipped successfully" });
+    res.json({ message: '아이템이 성공적으로 장착되었습니다.' });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Failed to equip item" });
+    res.status(500).json({ message: '아이템 장착에 실패했습니다.' });
   }
 };
 
@@ -90,13 +88,13 @@ export const unequipItem = async (req, res) => {
     });
 
     if (!character) {
-      return res.status(404).json({ message: "Character not found" });
+      return res.status(404).json({ message: '캐릭터를 찾을 수 없습니다.' });
     }
 
     // 아이템 찾기
     const item = await prisma.item.findFirst({ where: { item_code } });
     if (!item) {
-      return res.status(400).json({ message: "Item not found" });
+      return res.status(400).json({ message: '아이템을 찾을 수 없습니다.' });
     }
 
     // 캐릭터가 해당 아이템을 장착하고 있는지 확인
@@ -108,7 +106,9 @@ export const unequipItem = async (req, res) => {
     });
 
     if (!equippedItem) {
-      return res.status(400).json({ message: "Item not equipped" });
+      return res
+        .status(400)
+        .json({ message: '아이템이 장착되어 있지 않습니다.' });
     }
 
     // 캐릭터 스탯 업데이트 (아이템 능력치 제거)
@@ -148,9 +148,9 @@ export const unequipItem = async (req, res) => {
       where: { id: equippedItem.id },
     });
 
-    res.json({ message: "Item unequipped successfully" });
+    res.json({ message: '아이템이 성공적으로 장착 해제되었습니다.' });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Failed to unequip item" });
+    res.status(500).json({ message: '아이템 장착 해제에 실패했습니다.' });
   }
 };
